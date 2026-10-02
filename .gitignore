@@ -1,0 +1,26 @@
+# Datos y modelos: NUNCA se suben al repositorio (el repo es público)
+*.csv
+*.CSV
+*.xlsx
+*.xls
+*.joblib
+*.pkl
+*.parquet
+datos/
+modelos/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# PyInstaller
+build/
+dist/
+
+# Sistema
+.DS_Store
+Thumbs.db
