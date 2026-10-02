@@ -2,13 +2,10 @@ name: Pruebas y ejecutable para Windows
 
 on:
   push:
-    branches: [main]
-    tags: ["v*"]
-  pull_request:
   workflow_dispatch:
 
 permissions:
-  contents: write  # necesario solo para publicar el .exe en un Release al crear una etiqueta v*
+  contents: write  # necesario para publicar el .exe como Release descargable
 
 jobs:
   windows:
@@ -42,8 +39,13 @@ jobs:
           path: dist/DetectorFraude.exe
           retention-days: 30
 
-      - name: Publicar Release (solo con etiqueta v*)
-        if: startsWith(github.ref, 'refs/tags/v')
+      # Release con enlace directo de descarga (no pide iniciar sesión en GitHub).
+      # Desde main es la versión oficial; desde otras ramas queda como "pre-release".
+      - name: Publicar Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v0.1.${{ github.run_number }}
+          name: DetectorFraude v0.1.${{ github.run_number }} (${{ github.ref_name }})
+          target_commitish: ${{ github.sha }}
+          prerelease: ${{ github.ref_name != 'main' }}
           files: dist/DetectorFraude.exe

@@ -20,11 +20,11 @@ Proyecto de grado, UCC 2025.
 
 ## Descargar el .exe
 
-Cada cambio compila el ejecutable en GitHub Actions (runner de Windows):
+Cada cambio compila el ejecutable en GitHub Actions (runner de Windows) y lo publica en **Releases**:
 
-1. Abre la pestaña **Actions** del repositorio y entra a la última ejecución en verde.
-2. Descarga el artefacto **DetectorFraude-windows** (es un .zip con `DetectorFraude.exe`).
-3. Descomprime y haz doble clic. No necesita instalar Python ni tener internet.
+1. Abre la sección **Releases** del repositorio (columna derecha) y entra a la más reciente.
+2. Descarga `DetectorFraude.exe` (no hace falta iniciar sesión).
+3. Haz doble clic. No necesita instalar Python ni tener internet.
 
 Windows puede mostrar el aviso de SmartScreen porque el .exe no está firmado:
 "Más información" → "Ejecutar de todas formas".
