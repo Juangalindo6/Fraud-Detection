@@ -28,6 +28,13 @@ def test_resumen(csv_ejemplo):
     assert r["Años"] == "2023, 2024"
 
 
+def test_rango_de_anos():
+    from detector_fraude.nucleo.datos import _rango_anos
+
+    assert _rango_anos([2020, 2021, 2022, 2023, 2024]) == "2020–2024"
+    assert _rango_anos([2020, 2024]) == "2020, 2024"
+
+
 def test_rechaza_archivo_sin_formato(tmp_path):
     ruta = tmp_path / "otro.csv"
     ruta.write_text("a,b\n1,2\n", encoding="utf-8")

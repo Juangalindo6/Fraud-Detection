@@ -44,8 +44,8 @@ jobs:
       - name: Publicar Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0.1.${{ github.run_number }}
-          name: DetectorFraude v0.1.${{ github.run_number }} (${{ github.ref_name }})
+          tag_name: compilacion-${{ github.run_number }}
+          name: DetectorFraude (compilación ${{ github.run_number }}, rama ${{ github.ref_name }})
           target_commitish: ${{ github.sha }}
           prerelease: ${{ github.ref_name != 'main' }}
           files: dist/DetectorFraude.exe

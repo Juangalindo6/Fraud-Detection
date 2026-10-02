@@ -35,6 +35,11 @@ class Comprobantes:
         return [c for c in self.tabla.columns if PATRON_CUENTA.match(c)]
 
     @property
+    def descuadrados(self) -> int:
+        """Comprobantes cuyos débitos y créditos no suman 0 (tolerancia de 1 centavo)."""
+        return int((self.tabla[self.columnas_cuenta].sum(axis=1).abs() > 0.01).sum())
+
+    @property
     def tiene_etiqueta(self) -> bool:
         return "misstate" in self.tabla.columns
 
@@ -45,9 +50,18 @@ class Comprobantes:
             "Archivo": self.archivo.name,
             "Comprobantes": len(t),
             "Cuentas": len(self.columnas_cuenta),
-            "Años": ", ".join(str(a) for a in anos) if anos else "-",
+            "Años": _rango_anos(anos),
             "Trae etiqueta (misstate)": "Sí" if self.tiene_etiqueta else "No",
         }
+
+
+def _rango_anos(anos: list[int]) -> str:
+    """2022, 2023, 2024 -> "2022–2024"; años sueltos se listan."""
+    if not anos:
+        return "-"
+    if len(anos) > 2 and anos == list(range(anos[0], anos[-1] + 1)):
+        return f"{anos[0]}–{anos[-1]}"
+    return ", ".join(str(a) for a in anos)
 
 
 def _normalizar_columnas(tabla: pd.DataFrame, avisos: list[str]) -> pd.DataFrame:

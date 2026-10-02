@@ -11,12 +11,17 @@ Proyecto de grado, UCC 2025.
 
 ## Estado actual (fase 1: solo la app)
 
-- Cargar un CSV de comprobantes (`;` como separador y coma decimal).
-- Ver un resumen (comprobantes, cuentas, años, si trae etiqueta) y avisos
-  (columnas repetidas unidas, comprobantes descuadrados).
-- Vista previa de la tabla.
-- Botón **Analizar**, por ahora con un detector vacío ("Sin modelo"), y **Exportar** el resultado a CSV.
-- Los modelos se conectarán después en `src/detector_fraude/nucleo/detector.py`.
+Interfaz con menú lateral, tema claro y oscuro, y tres pantallas:
+
+- **Inicio:** arrastrar o elegir el CSV de comprobantes (`;` y coma decimal), con guía de 3 pasos
+  y archivos recientes. Los archivos grandes se leen en segundo plano.
+- **Datos:** tarjetas de resumen (comprobantes, cuentas, años, descuadrados), avisos de calidad
+  y tabla con buscador.
+- **Análisis:** elegir el modelo, analizar, ver el riesgo como etiquetas de color y exportar a CSV.
+  Por ahora solo existe el detector vacío ("Sin modelo"); los modelos se conectarán después en
+  `src/detector_fraude/nucleo/detector.py`.
+
+Para regenerar las capturas con datos inventados: `python herramientas/capturas.py capturas`.
 
 ## Descargar el .exe
 
@@ -48,7 +53,8 @@ Para compilar el .exe en tu propio PC: `empaquetado\compilar_exe.bat`.
 src/detector_fraude/
   nucleo/datos.py        lectura y validación del CSV
   nucleo/detector.py     punto de extensión para los modelos (hoy vacío)
-  interfaz/              ventana principal (PySide6)
+  interfaz/              ventana, pantallas, tema y componentes (PySide6)
+herramientas/            capturas de pantalla con datos inventados
 empaquetado/             script para PyInstaller y compilación local
 tests/                   pruebas automáticas
 .github/workflows/       pruebas y compilación del .exe en Windows
