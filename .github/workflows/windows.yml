@@ -1,0 +1,51 @@
+name: Pruebas y ejecutable para Windows
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write  # necesario para publicar el .exe como Release descargable
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Pruebas
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: pytest -q
+
+      - name: Compilar DetectorFraude.exe
+        run: pyinstaller --noconfirm --onefile --windowed --name DetectorFraude --paths src empaquetado/lanzador.py
+
+      - name: Subir el .exe como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: DetectorFraude-windows
+          path: dist/DetectorFraude.exe
+          retention-days: 30
+
+      # Release con enlace directo de descarga (no pide iniciar sesión en GitHub).
+      # Desde main es la versión oficial; desde otras ramas queda como "pre-release".
+      - name: Publicar Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: compilacion-${{ github.run_number }}
+          name: DetectorFraude (compilación ${{ github.run_number }}, rama ${{ github.ref_name }})
+          target_commitish: ${{ github.sha }}
+          prerelease: ${{ github.ref_name != 'main' }}
+          files: dist/DetectorFraude.exe
